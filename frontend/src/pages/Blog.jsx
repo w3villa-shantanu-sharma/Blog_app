@@ -2,7 +2,7 @@ import React from 'react';
 
 const Blog = ({ blog }) => {
   // Ensure that the 'blog' prop has the required structure for this component
-  const { title, content, date, imageUrl, author } = blog;
+  const { title, content, date, imageUrl} = blog;
 
   return (
     <div className="flex justify-center items-center mt-10">

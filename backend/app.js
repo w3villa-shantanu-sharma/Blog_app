@@ -15,7 +15,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes'); // Import Routes
 
 const blogRoutes = require('./routes/blogRoutes');
-const commentRoutes = require('./routes/commentRoutes');
+const commentRoutes = require('./comment-service/comment-routes/commentRoutes.js');
 const likeRoutes = require('./routes/likeRoutes');
 
 const PORT  = process.env.PORT || 5000;

@@ -72,7 +72,7 @@ const BlogDetails = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/comments', {
+      const response = await fetch('http://localhost:5002/api/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
