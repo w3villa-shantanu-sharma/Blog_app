@@ -15,11 +15,15 @@ const Layout = () => {
     }
   }, [setUser]);
 
+  
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    setUser(null);
-    navigate('/');
+    const confirmLogout = window.confirm('Are you sure you want to logout?');
+    if (confirmLogout) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      setUser(null);
+      navigate('/');
+    }
   };
 
   const menu = [

@@ -27,6 +27,10 @@ exports.updateComment = async (req, res) => {
 
     // Verify ownership
     const [comment] = await db.query('SELECT * FROM comments WHERE id = ? AND user_id = ?', [id, userId]);
+
+    if (comment.length === 0) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
     if (comment.length === 0) {
       return res.status(403).json({ message: 'You are not authorized to update this comment' });
     }
@@ -36,7 +40,7 @@ exports.updateComment = async (req, res) => {
       [content, id]
     );
 
-    res.json({ message: 'Comment updated!' });
+    res.json({ message: 'Comment updated!' , commentId : id });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

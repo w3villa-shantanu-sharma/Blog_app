@@ -16,15 +16,20 @@ exports.signup = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert into database
-        await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hashedPassword]);
+        // Insert user and get inserted ID
+        const [result] = await db.query(
+          'INSERT INTO users (username, email, password) VALUES (?, ?, ?)', 
+          [username, email, hashedPassword]
+        );
+        const userId = result.insertId;
 
-        res.status(201).json({ message: 'User created successfully!' });
+        res.status(201).json({ message: 'User created successfully!', userId, username, email });
     } catch (error) {
         console.error('Signup Error:', error);
-        res.status(500).json({ message: 'Something went wrong' });
+        res.status(500).json({ message: 'Something went wrong', error: error.message });
     }
 };
+
 
 // Login
 exports.login = async (req, res) => {

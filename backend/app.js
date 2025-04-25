@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const client = require('./db/conn.js');
+const path = require('path');
 
 const app = express();
 
@@ -26,6 +27,9 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use('/api/auth', authRoutes);
 app.use('/api', userRoutes);
 
@@ -33,9 +37,9 @@ app.use('/api/blogs', blogRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/likes', likeRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-  })
+// app.get('/', (req, res) => {
+//     res.send('Hello World!')
+//   })
   
   app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)

@@ -36,7 +36,7 @@ const BlogDetails = () => {
       alert('Please login to like the blog');
       return;
     }
-  
+
     try {
       const response = await fetch('http://localhost:5001/api/likes/toggle', {
         method: 'POST',
@@ -46,11 +46,11 @@ const BlogDetails = () => {
         },
         body: JSON.stringify({ blogId: id }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
-        setLiked(data.liked); // Update the liked state
-        setLikes((prev) => (data.liked ? prev + 1 : prev - 1)); // Update the likes count
+        setLiked(data.liked);
+        setLikes((prev) => (data.liked ? prev + 1 : prev - 1));
       } else {
         alert('Failed to toggle like');
       }
@@ -60,6 +60,11 @@ const BlogDetails = () => {
   };
 
   const handleCommentSubmit = async () => {
+    if (!comment.trim()) {
+      alert('Please enter a valid comment!');
+      return;
+    }
+
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Please login to comment');
@@ -75,9 +80,10 @@ const BlogDetails = () => {
         },
         body: JSON.stringify({ blogId: id, content: comment }),
       });
+
       if (response.ok) {
         const newComment = await response.json();
-        setComments([...comments, newComment]);
+        setComments((prevComments) => [...prevComments, newComment]);
         setComment('');
         alert('Comment added!');
       } else {
@@ -92,28 +98,27 @@ const BlogDetails = () => {
     <div className="p-6">
       {blog && (
         <div>
-          <h1 className="text-3xl font-bold">{blog.title}</h1>
-          <img src={blog.image} alt={blog.title} className="w-full h-64 object-cover my-4" />
-          <p>{blog.description}</p>
+          <h1 className="text-3xl font-bold text-gray-800">{blog.title}</h1>
+          <img src={blog.image} alt={blog.title} className="w-full h-64 object-cover my-4 rounded-lg" />
+          <p className="text-lg text-gray-700">{blog.description}</p>
           <div className="flex items-center mt-4">
             <button
               onClick={handleLike}
               className={`px-4 py-2 rounded ${
                 liked ? 'bg-red-500 text-white' : 'bg-gray-300 text-black'
               }`}
-              disabled={liked}
             >
               {liked ? 'Liked' : 'Like'}
             </button>
-            <span className="ml-2">{likes} Likes</span>
+            <span className="ml-2 text-gray-600">{likes} Likes</span>
           </div>
         </div>
       )}
       <div className="mt-6">
-        <h2 className="text-2xl font-bold">Comments</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Comments</h2>
         <div className="mt-4">
           {comments.map((c, index) => (
-            <div key={index} className="border-b py-2">
+            <div key={index} className="border-b py-2 text-gray-700">
               {c.content}
             </div>
           ))}
@@ -126,7 +131,7 @@ const BlogDetails = () => {
           onChange={(e) => setComment(e.target.value)}
         ></textarea>
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-600 transition-colors"
           onClick={handleCommentSubmit}
         >
           Submit
@@ -137,5 +142,3 @@ const BlogDetails = () => {
 };
 
 export default BlogDetails;
-
-
